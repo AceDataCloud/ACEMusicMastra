@@ -16,3 +16,7 @@ const tools = await provider.resolveTools(['acemusic_list_models', 'acemusic_get
 ```
 
 The server also offers song generation, lyrics, reference import, covers and mashups. Expose those tools when the application intends to submit a paid operation. Save its task ID and use `acemusic_get_task` for later progress. [中文](readme/README_zh_Hans.md) · [Mastra example](examples/mastra.ts)
+
+## Distribution
+
+Publishing a reviewed GitHub release with a matching `vX.Y.Z` tag builds and attaches the installable npm tarball after the offline tests pass. The package can also be built from the checkout.
