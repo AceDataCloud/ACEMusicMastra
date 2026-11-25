@@ -1,0 +1,26 @@
+name: Attach packages to a release
+on:
+  release:
+    types: [published]
+permissions:
+  contents: write
+jobs:
+  attach:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      RELEASE_TAG: ${{ github.event.release.tag_name }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - name: Verify the reviewed tag and package
+        run: |
+          test "v$(node -p 'require("./package.json").version')" = "$RELEASE_TAG"
+          mkdir -p artifacts
+          npm pack --pack-destination artifacts
+      - run: gh release upload "$RELEASE_TAG" artifacts/*.tgz
